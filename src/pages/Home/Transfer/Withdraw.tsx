@@ -1,23 +1,30 @@
 import { useWeb3React } from "@web3-react/core";
-import React, { useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Web3 from "web3";
 import { withdraw } from "../../../utils/anonDeposits";
 import snarkjs from "snarkjs";
 import config from "../../../utils/config";
 import { abi } from "../../../utils/abi/ETHAnon.js";
+import { useUpdateEffect } from "../../../hooks";
+
+const abis: any = abi;
 
 const Withdraw: React.FC = () => {
   const navigate = useNavigate();
-  const { account, library } = useWeb3React();
+  const { account, library, active } = useWeb3React();
   const [note, setNote] = useState("");
   const [recipient, setRecipient] = useState(account);
+  const [worker, setWorker]: any = useState();
+  const [groth16, setGroth16]: any = useState();
 
   const handleWithdraw = async () => {
     const anon = await getContract(note);
     console.log(anon);
     const { proof, args } = await withdraw(note, anon, account);
-    console.log(proof, args);
+    await anon.methods
+      .withdraw(proof, ...args)
+      .send({ from: account, gas: 1e6 });
   };
 
   const getContract = async (note: string) => {
@@ -25,7 +32,7 @@ const Withdraw: React.FC = () => {
     const web3 = new Web3(library.provider);
     const address =
       config.deployments[`netId${netId}`][currency].instanceAddress[amount];
-    const anon = new web3.eth.Contract(abi, address);
+    const anon = new web3.eth.Contract(abis, address);
     return anon;
   };
 

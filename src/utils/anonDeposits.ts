@@ -5,13 +5,18 @@ import crypto from "crypto";
 // import instanceAbi from "./abi/ETHAnon.json"
 // import config from "./config"
 import assert from "assert";
-import { genWitnessAndProve, toSolidityInput } from "websnark/src/utils";
+import websnarkUtils from "websnark/src/utils";
 import merkleTree from "fixed-merkle-tree";
-import buildGroth16 from "websnark/src/groth16";
 
 const bigInt = snarkjs.bigInt;
 
-let groth16, proving_key, circuit;
+declare global {
+  interface Window {
+    groth16: any;
+    proving_key: any;
+    circuit: any;
+  }
+}
 
 const rbigint = (nbytes) => bigInt.leBuff2int(crypto.randomBytes(nbytes));
 
@@ -78,7 +83,14 @@ export async function withdraw(note: string, anon: any, recipient: any) {
   return { proof, args };
 }
 
-async function generateProof(anon, deposit, recipient) {
+async function generateProof(
+  anon,
+  deposit,
+  recipient,
+  realyerAddress = 0,
+  fee = 0,
+  refund = 0
+) {
   const { root, pathElements, pathIndices } = await generateMerkleProof(
     anon,
     deposit
@@ -89,9 +101,9 @@ async function generateProof(anon, deposit, recipient) {
     root: root,
     nullifierHash: deposit.nullifierHash,
     recipient: bigInt(recipient),
-    relayer: bigInt(0),
-    fee: bigInt(0),
-    refund: bigInt(0),
+    relayer: bigInt(realyerAddress),
+    fee: bigInt(fee),
+    refund: bigInt(refund),
 
     // Private snark inputs
     nullifier: deposit.nullifier,
@@ -100,18 +112,19 @@ async function generateProof(anon, deposit, recipient) {
     pathIndices: pathIndices,
   };
 
-  const proving_key = await (
-    await fetch("circuits/withdraw_proving_key.bin")
-  ).arrayBuffer();
+  // const proving_key = await (
+  //   await fetch("./circuits/withdraw_proving_key.bin")
+  // ).arrayBuffer();
+  // const circuit = await (await fetch("./circuits/anon.json")).json();
 
-  const proofData = await genWitnessAndProve(
-    groth16,
+  const proofData = await websnarkUtils.genWitnessAndProve(
+    window.groth16,
     input,
-    circuit,
-    proving_key
+    window.circuit,
+    window.proving_key
   );
 
-  const { proof } = toSolidityInput(proofData);
+  const { proof } = websnarkUtils.toSolidityInput(proofData);
 
   const args = [
     toHex(input.root),
@@ -156,33 +169,3 @@ async function generateMerkleProof(anon, deposit) {
   const { pathElements, pathIndices } = tree.path(leafIndex);
   return { pathElements, pathIndices, root: tree.root() };
 }
-
-async function init() {
-  console.log("started building");
-
-  try {
-    circuit = require("./circuits/withdraw.json");
-  } catch (e) {
-    console.log("circuit err");
-  }
-
-  try {
-    proving_key = await (
-      await fetch("./circuits/withdraw_proving_key.bin")
-    ).arrayBuffer();
-  } catch (e) {
-    console.log("proving err");
-  }
-
-  try {
-    groth16 = await buildGroth16();
-  } catch (e) {
-    console.log("groth16 err");
-  }
-
-  console.log("groth16 finished building");
-
-  return;
-}
-
-init();

@@ -5,15 +5,15 @@ import { useWeb3React } from "@web3-react/core";
 import "./layout.scss";
 import { ReactComponent as Logo } from "../../assets/images/logo.svg";
 import { ReactComponent as Menu } from "../../assets/icons/menu.svg";
-import metamask from "../../assets/images/metamask.png";
-import ethereum from "../../assets/images/ethereum.png";
+import metamask from "../../assets/images/metamask.svg";
+import ethereum from "../../assets/images/ethereum.svg";
 import { networks } from "../../utils/networks";
 import { motion } from "framer-motion";
 import { walletContext } from "../../store/walletContext";
 
-const Header: React.FC<{ setNetworkModal: React.Dispatch<React.SetStateAction<boolean>> }> = ({
-  setNetworkModal,
-}) => {
+const Header: React.FC<{
+  setNetworkModal: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ setNetworkModal }) => {
   const { active, chainId } = useWeb3React();
   const navigate = useNavigate();
   const { setOpenWalletModal } = useContext(walletContext);
@@ -60,7 +60,10 @@ const Header: React.FC<{ setNetworkModal: React.Dispatch<React.SetStateAction<bo
             exit={{ opacity: 0 }}
           >
             <p className="sm">{active ? "connected" : "Not connected"}</p>
-            <p className=" md text-primary pointer" onClick={() => setOpenWalletModal(true)}>
+            <p
+              className=" md text-primary pointer"
+              onClick={() => setOpenWalletModal(true)}
+            >
               {active ? "Connected" : "Connect"}
             </p>
           </motion.div>

@@ -12,6 +12,8 @@ import { useCoinList } from "../../../hooks/DepositEssentialHooks/useCoinList";
 import config from "../../../utils/config";
 import { deposit } from "../../../utils/anonDeposits";
 
+const abis: any = abi;
+
 const Deposit: React.FC = () => {
   const navigate = useNavigate();
   const { account, chainId, library } = useWeb3React();
@@ -90,7 +92,7 @@ const Deposit: React.FC = () => {
   function getContractInstance() {
     const web3 = new Web3(library.provider);
     const anon = new web3.eth.Contract(
-      abi,
+      abis,
       config.deployments[`netId${chainId}`][selectedCoin].instanceAddress[
         selectedAmount
       ]

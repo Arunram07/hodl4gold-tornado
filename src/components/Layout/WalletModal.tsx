@@ -5,8 +5,8 @@ import "./Modal.scss";
 import { ReactComponent as Close } from "../../assets/icons/close.svg";
 import { useWeb3React } from "@web3-react/core";
 import { Injected, Walletconnect } from "../../utils/connector";
-import metamask from "../../assets/images/metamask.png";
-import walletconnectLogo from "../../assets/images/walletconnect.png";
+import metamask from "../../assets/images/metamask.svg";
+import walletconnectLogo from "../../assets/images/walletconnect.svg";
 import { LoaderContext } from "../../store/LoaderContext";
 
 const backdropVariants = {
