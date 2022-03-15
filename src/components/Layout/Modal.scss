@@ -1,0 +1,147 @@
+@import "../../index.scss";
+
+.modal_backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 90;
+
+  &.loader {
+    z-index: 100;
+  }
+
+  .modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 5px;
+    transform: translate(-50%, -50%);
+    background-color: $secondary;
+    border: 1px solid $primary;
+    max-width: 360px;
+    padding: 1.5em;
+
+    .flex {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .network_wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+
+      > div {
+        gap: 1em;
+
+        .network_block {
+          display: flex;
+          align-items: center;
+
+          img {
+            object-fit: contain;
+            margin-right: 0.5em;
+          }
+        }
+
+        .radio {
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          border: 1px solid $primary;
+          position: relative;
+          transition: background-color 250ms linear;
+
+          &.active {
+            &::before {
+              background-color: $primary;
+            }
+          }
+
+          &::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 15px;
+            height: 15px;
+            background-color: transparent;
+            border-radius: 50%;
+          }
+        }
+      }
+    }
+  }
+}
+
+.wallet_modal {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  border-radius: 5px;
+  transform: translateX(-50%);
+  background-color: $secondary;
+  border: 1px solid $primary;
+  max-width: 480px;
+  padding: 1.5em;
+  width: 100%;
+
+  .flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .wallets {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, 100px);
+    grid-auto-rows: 100px;
+    grid-gap: 1em;
+    padding: 0.5em;
+
+    > div {
+      padding: 0.5em;
+      border-radius: 5px;
+      border: 1px solid $primary;
+      cursor: pointer;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+  }
+}
+
+.modal_loader {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+
+  .spinner {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid $primary;
+    border-top-color: transparent;
+    border-right-color: transparent;
+    animation: spin 1s infinite linear;
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+  }
+}

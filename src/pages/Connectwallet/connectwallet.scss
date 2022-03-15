@@ -1,0 +1,35 @@
+@import "../../index.scss";
+
+.connectwallet_route {
+  margin-bottom: 5em;
+
+  .wallet_accounts {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid $primary;
+    background-color: $secondary;
+    border-radius: 8px;
+    max-width: 560px;
+    margin: 0 auto;
+    padding: 1.5em;
+
+    .accounts {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding-bottom: 1em;
+      border-bottom: 0.5px solid $primary;
+    }
+  }
+
+  .wallets {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    grid-gap: 1em;
+    width: 100%;
+  }
+}
