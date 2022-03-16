@@ -12,7 +12,9 @@ const abis: any = abi;
 
 const Withdraw: React.FC = () => {
   const navigate = useNavigate();
-  const { account, library, active } = useWeb3React();
+  const { account, library } = useWeb3React();
+  const [amount, setAmount] = useState(0);
+  const [tokenReceive, setTokenReceive] = useState(0);
   const [note, setNote] = useState("");
   const [recipient, setRecipient] = useState(account);
   const [worker, setWorker]: any = useState();
@@ -22,16 +24,13 @@ const Withdraw: React.FC = () => {
     const anon = await getContract(note);
     console.log(anon);
     const { proof, args } = await withdraw(note, anon, account);
-    await anon.methods
-      .withdraw(proof, ...args)
-      .send({ from: account, gas: 1e6 });
+    await anon.methods.withdraw(proof, ...args).send({ from: account, gas: 1e6 });
   };
 
   const getContract = async (note: string) => {
     const { currency, amount, netId } = await getWithdrawEssentials(note);
     const web3 = new Web3(library.provider);
-    const address =
-      config.deployments[`netId${netId}`][currency].instanceAddress[amount];
+    const address = config.deployments[`netId${netId}`][currency].instanceAddress[amount];
     const anon = new web3.eth.Contract(abis, address);
     return anon;
   };
@@ -62,20 +61,17 @@ const Withdraw: React.FC = () => {
       <div>
         <p className="md mb-10">Note</p>
         <div className="input_container">
-          <input
-            type="text"
-            value={note}
-            onChange={({ target }) => setNote(target.value)}
-          />
+          <input type="text" value={note} onChange={({ target }) => setNote(target.value)} />
+        </div>
+        <div className="flex_between">
+          <p>Amount</p>
+          <b>{amount}</b>
         </div>
       </div>
       <div>
         <div className="flex-gap mb-10">
           <p className="md">Recipient Address</p>
-          <p
-            className="sm"
-            style={{ textDecoration: "underline", cursor: "pointer" }}
-          >
+          <p className="sm" style={{ textDecoration: "underline", cursor: "pointer" }}>
             Donate
           </p>
         </div>
@@ -86,13 +82,14 @@ const Withdraw: React.FC = () => {
             onChange={({ target }) => setRecipient(target.value)}
           />
         </div> */}
+        <div className="flex_between">
+          <p>Tokens to receive</p>
+          <b>{tokenReceive}</b>
+        </div>
       </div>
       <div>
         {account ? (
-          <button
-            className="btn btn-primary full-width"
-            onClick={() => handleWithdraw()}
-          >
+          <button className="btn btn-primary full-width" onClick={() => handleWithdraw()}>
             Withdraw
           </button>
         ) : (
