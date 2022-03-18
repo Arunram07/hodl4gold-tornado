@@ -20,6 +20,14 @@
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
         border-bottom-color: transparent;
+
+        span {
+          font-size: 0.75em;
+          padding: 2px 5px;
+          border: 1px solid $primary;
+          margin-left: 0.5em;
+          border-radius: 5px;
+        }
       }
     }
     &-content {
@@ -30,22 +38,33 @@
       border-bottom-right-radius: 5px;
       border-top-right-radius: 5px;
 
+      .stats_error {
+        height: 100px;
+        display: grid;
+        place-items: center;
+        text-align: center;
+      }
+
       .stats_grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 1.5em;
+        gap: 1em;
         margin-top: 1em;
 
         > div {
           display: flex;
           flex-direction: column;
-          gap: 10px;
+          gap: 2.5px;
+
+          .skeleton-loader {
+            padding: 7px;
+          }
 
           p {
-            border-radius: 5px;
+            border-radius: 2px;
             background-color: $primary;
             padding: 4px 1em;
-            font-size: 14px;
+            font-size: 13px;
           }
           p:nth-child(even) {
             background-color: transparent;
@@ -54,7 +73,6 @@
       }
     }
   }
-
   &_transfer_container {
     &-header {
       display: flex;
@@ -199,7 +217,7 @@
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            border: 2px solid $primary;
+            border: 3px solid $primary;
             position: relative;
             background-color: $secondary;
             cursor: pointer;
@@ -215,10 +233,10 @@
               content: "";
               position: absolute;
               top: 50%;
-              left: 50%;
-              transform: translate(-50%, -50%);
-              width: 12px;
-              height: 12px;
+              left: 50.1%;
+              transform: translate(-49.5%, -50%);
+              width: 10px;
+              height: 10px;
               border-radius: 50%;
               background-color: transparent;
             }

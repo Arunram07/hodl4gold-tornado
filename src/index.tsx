@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import { Web3ReactProvider } from "@web3-react/core";
 import { Web3Provider } from "@ethersproject/providers";
 import { BrowserRouter } from "react-router-dom";
+import { createClient, Provider as GraphProvider } from "urql";
 
 import "./index.scss";
 import App from "./App";
@@ -14,12 +15,21 @@ function getLibrary(provider) {
   return library;
 }
 
+const API_URL =
+  "https://api.thegraph.com/subgraphs/name/braj1410/anonwalletrinkeby";
+
+const client = createClient({
+  url: API_URL,
+});
+
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Web3ReactProvider getLibrary={getLibrary}>
         <Provider>
-          <App />
+          <GraphProvider value={client}>
+            <App />
+          </GraphProvider>
         </Provider>
       </Web3ReactProvider>
     </BrowserRouter>

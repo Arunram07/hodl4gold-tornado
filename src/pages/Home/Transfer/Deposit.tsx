@@ -1,5 +1,5 @@
 import { useWeb3React } from "@web3-react/core";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Web3 from "web3";
 import { abi } from "../../../utils/abi/ETHAnon.js";
@@ -11,6 +11,7 @@ import { useUpdateEffect } from "../../../hooks";
 import { useCoinList } from "../../../hooks/DepositEssentialHooks/useCoinList";
 import config from "../../../utils/config";
 import { deposit } from "../../../utils/anonDeposits";
+import { LoaderContext } from "../../../store/LoaderContext";
 
 const abis: any = abi;
 
@@ -26,6 +27,7 @@ const Deposit: React.FC = () => {
   const [selectedCoin, setSelectedCoin] = useState<string>("");
   const [selectedAmount, setSelectedAmount] = useState<string>("");
   const [depositO, setDepositO] = useState<any>();
+  const { setIsLoading } = useContext(LoaderContext);
 
   useUpdateEffect(() => {
     setToggleDropdown(false);
@@ -71,22 +73,19 @@ const Deposit: React.FC = () => {
   }
 
   const handleSendDeposit = async () => {
-    const element = document.createElement("a");
-    element.setAttribute(
-      "href",
-      "data:text/plain;charset=utf-8," + encodeURIComponent(note)
-    );
-    element.setAttribute("download", `backup-${note.substring(0, 28)}.txt`);
-    element.style.display = "none";
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
-    const instance = getContractInstance();
-    const hex = toHex(depositO.commitement);
-    await instance.methods
-      .deposit(hex)
-      .send({ value: Web3.utils.toWei(selectedAmount), from: account });
-    setDepositModal(false);
+    try {
+      setIsLoading(true);
+      const instance = getContractInstance();
+      const hex = toHex(depositO.commitement);
+      await instance.methods
+        .deposit(hex)
+        .send({ value: Web3.utils.toWei(selectedAmount), from: account });
+      setDepositModal(false);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
   };
 
   function getContractInstance() {

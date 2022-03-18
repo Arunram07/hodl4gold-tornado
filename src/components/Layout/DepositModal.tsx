@@ -37,7 +37,12 @@ interface ModalProps {
   handleSendDeposit: () => void;
 }
 
-const DepositModal: React.FC<ModalProps> = ({ modal, setModal, note, handleSendDeposit }) => {
+const DepositModal: React.FC<ModalProps> = ({
+  modal,
+  setModal,
+  note,
+  handleSendDeposit,
+}) => {
   const [isChecked, setIsChecked] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
 
@@ -46,6 +51,19 @@ const DepositModal: React.FC<ModalProps> = ({ modal, setModal, note, handleSendD
       setTimeout(() => setIsCopied(false), 3000);
     }
   }, [isCopied]);
+
+  const handleSaveNote = () => {
+    const element = document.createElement("a");
+    element.setAttribute(
+      "href",
+      "data:text/plain;charset=utf-8," + encodeURIComponent(note)
+    );
+    element.setAttribute("download", `backup-${note.substring(0, 28)}.txt`);
+    element.style.display = "none";
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  };
 
   return (
     <AnimatePresence exitBeforeEnter>
@@ -74,25 +92,38 @@ const DepositModal: React.FC<ModalProps> = ({ modal, setModal, note, handleSendD
             </div>
             <div className="modal_content">
               <p className="md">
-                Please backup your note. You will need it later to withdraw your deposit back
+                Please backup your note. You will need it later to withdraw your
+                deposit back
               </p>
               <p className="md">
-                Treat your note as a private key - never share it with anyone , including Hodl4Gold
-                developers
+                Treat your note as a private key - never share it with anyone ,
+                including Hodl4Gold developers
               </p>
-              <p className="text-primary mt-10 mb-10">
-                {note}&nbsp;
+              <p className="mt-10 mb-10" style={{ wordBreak: "break-word" }}>
+                <span className="text-primary mr-10"> {note}</span>
                 <CopyToClipbaord text={note}>
                   <span
                     style={{ color: "#000", cursor: "pointer" }}
+                    className="mr-10"
                     onClick={() => setIsCopied(true)}
                   >
                     {isCopied ? "copied" : "copy"}
                   </span>
                 </CopyToClipbaord>
+                <kbd
+                  style={{ cursor: "pointer" }}
+                  onClick={() => handleSaveNote()}
+                >
+                  save
+                </kbd>
               </p>
-              <p className="mb-20 md">The file will ask to save your note as a file</p>
-              <div style={{ display: "flex", alignItems: "center" }} className="mb-10">
+              <p className="mb-20 md">
+                The file will ask to save your note as a file
+              </p>
+              <div
+                style={{ display: "flex", alignItems: "center" }}
+                className="mb-10"
+              >
                 <input
                   type="checkbox"
                   checked={isChecked}
@@ -103,7 +134,8 @@ const DepositModal: React.FC<ModalProps> = ({ modal, setModal, note, handleSendD
               <button
                 className="btn btn-primary"
                 onClick={() => {
-                  if (!isChecked) return alert("please check the checkbox to proceed");
+                  if (!isChecked)
+                    return alert("please check the checkbox to proceed");
                   handleSendDeposit();
                 }}
               >
