@@ -2,11 +2,7 @@
   "compilerOptions": {
     "target": "ES6",
     "useDefineForClassFields": true,
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ES6"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "ES6"],
     "allowJs": true,
     "skipLibCheck": false,
     "esModuleInterop": false,
@@ -22,11 +18,6 @@
     "noImplicitAny": false,
     "sourceMap": true
   },
-  "include": [
-    "./src"
-  ],
-  "files": [
-    "src/index.tsx",
-    "src/react-app-env.d.ts"
-  ]
+  "include": ["./src"],
+  "files": ["src/index.tsx", "src/react-app-env.d.ts"]
 }

@@ -3,7 +3,6 @@ import React, { Component, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Web3 from "web3";
 import { withdraw } from "../../../utils/anonDeposits";
-import snarkjs from "snarkjs";
 import config from "../../../utils/config";
 import { abi } from "../../../utils/abi/ETHAnon.js";
 import { useUpdateEffect } from "../../../hooks";
@@ -13,7 +12,8 @@ const abis: any = abi;
 
 const Withdraw: React.FC = () => {
   const navigate = useNavigate();
-  const { account, library, active } = useWeb3React();
+  const { account, library } = useWeb3React();
+  const [tokenReceive, setTokenReceive] = useState(0);
   const [note, setNote] = useState("");
   const [recipient, setRecipient] = useState("");
   const [worker, setWorker]: any = useState();
@@ -67,8 +67,6 @@ const Withdraw: React.FC = () => {
     }
 
     const buf = Buffer.from(match.groups.note, "hex");
-    const nullifier = snarkjs.bigInt.leBuff2int(buf.slice(0, 31));
-    const secret = snarkjs.bigInt.leBuff2int(buf.slice(31, 62));
 
     const netId = Number(match.groups.netId);
 
@@ -92,6 +90,10 @@ const Withdraw: React.FC = () => {
             value={note}
             onChange={({ target }) => setNote(target.value)}
           />
+        </div>
+        <div className="flex_between">
+          <p>Amount</p>
+          <b>{amount}</b>
         </div>
         {isValid && (
           <div className="flex_between">
