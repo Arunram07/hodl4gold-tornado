@@ -21,13 +21,13 @@ const Home: React.FC = () => {
           </div>
         </div>
       )}
-      <button onClick={() => setState({ ...state, amount: "1" })}>1 eth</button>
+      {/* <button onClick={() => setState({ ...state, amount: "1" })}>1 eth</button>
       <button onClick={() => setState({ ...state, amount: "0.1" })}>
         0.1 eth
-      </button>
+      </button> */}
       <div className="home">
         <Transfer />
-        <Stats amount={state.amount} currency={state.currency} />
+        {/* <Stats amount={state.amount} currency={state.currency} /> */}
       </div>
     </>
   );
