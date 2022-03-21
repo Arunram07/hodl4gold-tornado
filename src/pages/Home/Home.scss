@@ -2,9 +2,8 @@
 
 .home {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5em;
-  margin-bottom: 10em;
+  place-items: center;
+  margin-bottom: 5em;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
@@ -74,6 +73,9 @@
     }
   }
   &_transfer_container {
+    max-width: 450px;
+    width: 100%;
+
     &-header {
       display: flex;
       align-items: center;
