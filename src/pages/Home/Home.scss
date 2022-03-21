@@ -2,13 +2,8 @@
 
 .home {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5em;
-  margin-bottom: 10em;
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
+  place-items: center;
+  margin-bottom: 5em;
 
   &_stats_container {
     &-header {
@@ -75,6 +70,9 @@
   }
 
   &_transfer_container {
+    max-width: 450px;
+    width: 100%;
+
     &-header {
       display: flex;
       align-items: center;
